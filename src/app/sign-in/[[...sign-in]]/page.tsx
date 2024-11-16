@@ -8,3 +8,17 @@ export default function Page() {
     </div>
   );
 }
+export async function generateStaticParams() {
+  const posts = await fetch('https://.../posts').then((res) => res.json())
+ 
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+ 
+// Multiple versions of this page will be statically generated
+// using the `params` returned by `generateStaticParams`
+export default async function Page({ params }) {
+  const { slug } = await params
+  // ...
+}
