@@ -1,17 +1,10 @@
 import { SignIn } from '@clerk/nextjs';
 
-// Define the type for the `post` object (assumes 'slug' is a string)
-interface Post {
-  slug: string;
-}
-
 // Define the return type for `generateStaticParams`
+// Since we only need a static sign-in page, we don't actually need dynamic params here.
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts: Post[] = await fetch('https://.../posts').then((res) => res.json());
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  // Return an empty array as no params are needed for the sign-in page
+  return [];
 }
 
 // Define the types for `params` in the `Page` component
@@ -19,14 +12,14 @@ interface PageParams {
   slug: string;
 }
 
-// Multiple versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
-export default async function Page({ params }: { params: PageParams }) {
-  const { slug } = params;
+// SignIn page component
+export default function Page({ params }: { params: PageParams }) {
   return (
-      <div className='flex items-center justify-center flex-col gap-10'>
-        <h1 className='text-4xl font-bold mt-20'>This is signin page</h1>
-        <SignIn />
-      </div>
-    );
+    <div className="flex items-center justify-center flex-col gap-10 min-h-screen">
+      <h1 className="text-4xl font-bold mt-20">Sign In</h1>
+      
+      {/* Display the SignIn component from Clerk */}
+      <SignIn />
+    </div>
+  );
 }
